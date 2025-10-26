@@ -1,0 +1,327 @@
+:root {
+    --bg: #0d0d1a;
+    --card: rgba(255, 255, 255, 0.05);
+    --accent-kral: #ffd700;
+    --accent-voin: #ff4d4d;
+    --accent-mag: #00f2ff;
+    --accent-lubov: #ff66c4;
+    --text: #f0f0f0;
+    --subtle: #a0a0c0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.pa-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.pa-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #ffd700, #ff66c4, #00f2ff);
+    -webkit-background-clip: text;
+    /* ВКЛЮЧЕНО */
+    background-clip: text;
+    /* за съвместимост */
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+.pa-progress {
+    width: 100%;
+    max-width: 600px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto 30px;
+}
+
+.pa-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ff66c4);
+    width: 0%;
+    transition: width .4s ease;
+}
+
+.pa-form {
+    width: 100%;
+    max-width: 600px;
+}
+
+.pa-card {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    display: none;
+    backdrop-filter: blur(10px);
+    animation: paFadeIn .6s ease forwards;
+}
+
+.pa-card.active {
+    display: block;
+}
+
+@keyframes paFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pa-card h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+/* Контейнер за отговорите */
+.pa-answers { display: grid; gap: 10px; }
+
+/* Картичка-отговор */
+.pa-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 42px 14px 44px; /* място за тикчето и булета */
+  margin: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease,
+              box-shadow .25s ease, transform .12s ease;
+}
+
+.pa-option:hover { background: rgba(255,255,255,.08); transform: translateY(-1px); }
+.pa-option:active { transform: translateY(0); }
+
+/* Скриваме радио бутона, но пазим достъпността */
+.pa-option input {
+  position: absolute; inset: 0;
+  opacity: 0; pointer-events: none;
+}
+
+/* Малък кръг (булет) вляво */
+.pa-bullet {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.4);
+  background: transparent;
+  transition: all .25s ease;
+}
+
+/* Текстът на отговора */
+.pa-text { line-height: 1.4; }
+
+/* Тикче вдясно */
+.pa-check {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%) scale(.6);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* Фокус през клавиатура */
+.pa-option:focus-within {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.18);
+}
+
+/* Активен (избран) отговор */
+.pa-option.is-selected {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border-color: transparent;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.18) inset,
+              0 8px 20px rgba(0,0,0,.35);
+}
+
+/* Цветов акцент според архетипа */
+.pa-option[data-arch="kral"] { --accent: var(--accent-kral); --accent2: #ffe26b; }
+.pa-option[data-arch="voin"] { --accent: var(--accent-voin); --accent2: #ff9b9b; }
+.pa-option[data-arch="mag"]  { --accent: var(--accent-mag);  --accent2: #7ff7ff; }
+.pa-option[data-arch="lubov"]{ --accent: var(--accent-lubov);--accent2: #ff9adf; }
+
+/* Булетът става цветен при избор */
+.pa-option.is-selected .pa-bullet {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(90deg, var(--accent), var(--accent2)) border-box;
+  border: 2px solid transparent;
+}
+
+/* Показваме тикчето при избор */
+.pa-option.is-selected .pa-check {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+
+.pa-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pa-btn {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.pa-btn:hover {
+    transform: scale(1.05);
+}
+
+.pa-next {
+    background: linear-gradient(90deg, #ffd700, #ff66c4);
+    color: #000;
+    font-weight: bold;
+}
+
+.pa-prev {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.pa-result {
+    display: none;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    animation: paFadeIn .8s ease;
+}
+
+.pa-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, .1);
+    border-radius: 5px;
+    margin: 8px 0 20px;
+    overflow: hidden;
+}
+
+.pa-bar {
+    height: 100%;
+    border-radius: 5px;
+}
+
+.pa-reset {
+    /* margin-top: 30px; */
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+
+
+/* --- Top Nav --- */
+.pa-topnav {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 0 auto 24px;
+    flex-wrap: wrap;
+}
+
+.pa-link {
+    --ring: rgba(255, 255, 255, .25);
+    --hover: rgba(255, 255, 255, .08);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--text);
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    backdrop-filter: blur(6px);
+    transition: background .25s ease, transform .15s ease, box-shadow .25s ease;
+}
+
+.pa-link:hover {
+    background: var(--hover);
+    transform: translateY(-1px);
+}
+
+.pa-link:active {
+    transform: translateY(0);
+}
+
+.pa-link:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Активен линк (NavLink с aria-current="page") */
+.pa-link[aria-current="page"] {
+    background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(90deg, var(--accent-kral), var(--accent-lubov), var(--accent-mag)) border-box;
+    border: 1px solid transparent;
+    color: #000;
+    font-weight: 700;
+}
+
+
+
+
+.pa-about {
+    max-width: 760px;
+    margin: 0 auto 40px;
+}
+
+.pa-prose {
+    line-height: 1.7;
+}
+
+.pa-prose h3 {
+    margin: 18px 0 8px;
+}
+
+.pa-prose ul {
+    margin: 0 0 10px 18px;
+}
+
+.pa-prose li {
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.pa-prose em {
+    color: var(--subtle);
+    font-style: normal;
+}
+
+
+.pa-progress-meta{
+  margin: 6px 0 18px;
+  font-size: .95rem;
+  color: var(--subtle);
+  text-align: center;
+}
